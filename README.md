@@ -22,7 +22,7 @@ The API provides the name of Breweries, the locations, and the websites if the B
 
  ### Database Schema
 
-![Schema](assets/schema.png "Schema")
+![Schema](assets/schema_update.png "Schema")
 
  ### Possible API issues
 One of the issues that may arise is that the API is community driven and maintained. 
