@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+	<h1>Brewery Search</h1>
+	<hr />
+	<form method="POST">
+		{{ form.csrf_token }} {{ form.city.label }} {{ form.city }} {{
+		form.state.label }} {{ form.state }}
+		<button type="submit" class="btn btn-primary">Search</button>
+	</form>
+	<hr />
+	{% if breweries %}
+	<div class="row justify-content-center">
+		{% for brewery in breweries %}
+		<div class="col-md-6">
+			<div class="card mb-3">
+				<div class="card-body">
+					<a
+						href="{{ url_for('brewery_details', brewery_name=brewery.name) }}"
+					>
+						<h5 class="card-title">{{ brewery.name }}</h5>
+					</a>
+					<p class="card-text">
+						{{ brewery.brewery_type.capitalize() }}
+					</p>
+					<p class="card-text">
+						{{ brewery.street }}, {{ brewery.city }}, {{
+						brewery.state }}, {{ brewery.postal_code }}
+					</p>
+					<p class="card-text">{{ brewery.phone }}</p>
+					<a href="{{ brewery.website_url }}" class="btn btn-primary"
+						>Website</a
+					>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+</div>
+{% endblock %}

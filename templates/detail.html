@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<div class="card mb-3">
+				<div class="card-body">
+					<h5 class="card-title">{{ brewery.name }}</h5>
+					<p class="card-text">
+						{{ brewery.brewery_type.capitalize() }}
+					</p>
+					<p class="card-text">
+						{{ brewery.street }}, {{ brewery.city }}, {{
+						brewery.state }}, {{ brewery.postal_code }}
+					</p>
+					<p class="card-text">{{ brewery.phone }}</p>
+					<a href="{{ brewery.website_url }}" class="btn btn-primary"
+						>Website</a
+					>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
