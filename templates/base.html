@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-	{% include 'banner.html' %}
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,7 +7,8 @@
 		<title>{% block title %} {% endblock %}</title>
 
 		<!-- CSS File -->
-		<link rel="stylesheet" href="static/style.css" />
+		<link rel="stylesheet" href="/static/style.css" />
+
 		<!-- Bootstrap CSS -->
 		<link
 			rel="stylesheet"
@@ -25,8 +25,19 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	</head>
 	<body>
+		<header class="banner">
+			<div class="header-container">
+				<a href="/">
+					<img
+						class="banner-img"
+						src="{{ url_for('static', filename='banner.jpg') }}"
+						alt="banner"
+					/>
+				</a>
+			</div>
+		</header>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand" href="#">Brew Browse</a>
+			<a class="navbar-brand" href="/">Brew Browse</a>
 			<button
 				class="navbar-toggler"
 				type="button"
@@ -59,7 +70,9 @@
 						>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ url_for('signup') }}"
+						<a
+							class="nav-link signup"
+							href="{{ url_for('signup') }}"
 							>Signup</a
 						>
 					</li>
