@@ -9,7 +9,12 @@
 				}}
 			</p>
 			<p>{{ brewery.phone }}</p>
-			<p>{{ brewery.website_url }}</p>
+			<p>
+				Website:
+				<a href="{{ brewery.website_url }}"
+					>{{ brewery.website_url }}</a
+				>
+			</p>
 		</div>
 		<div class="col-md-4">
 			<h4>Add a Review</h4>
@@ -49,15 +54,39 @@
 	{% for review in reviews %}
 	<div class="row mb-3">
 		<div class="col-md-12">
-			<p>{{ review.review }}</p>
 			<p>
-				{% for i in range(review.star_rating) %}
-				<i class="fas fa-star"></i>
-				{% endfor %} {% for i in range(5 - review.star_rating) %}
-				<i class="far fa-star"></i>
+				{% for i in range(review.star_rating if review.star_rating is
+				not none else 0) %}
+				<img
+					src="{{ url_for('static', filename='beer.png') }}"
+					alt="beer icon"
+					width="20"
+				/>
+				{% endfor %} {% for i in range(5 - (review.star_rating if
+				review.star_rating is not none else 0)) %}
+				<img
+					src="{{ url_for('static', filename='beer.png') }}"
+					alt="beer icon"
+					width="20"
+					style="opacity: 0.2"
+				/>
 				{% endfor %}
 			</p>
+
+			<p>{{ review.review }}</p>
+
 			<small>Reviewed by {{ review.user.username }}</small>
+
+			{% if g.user and review.user == g.user %}
+			<form
+				method="POST"
+				action="{{ url_for('delete_review', brewery_name=brewery.name, review_id=review.id) }}"
+			>
+				<button type="submit" class="btn btn-danger btn-sm">
+					Delete
+				</button>
+			</form>
+			{% endif %}
 		</div>
 	</div>
 	{% endfor %}

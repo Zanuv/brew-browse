@@ -20,6 +20,7 @@ app.app_context().push()
 connect_db(app)
 
 #############################
+
 # User Login and Signup
 
 
@@ -46,6 +47,8 @@ def do_logout():
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
+
+# Handles user signup
 
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -78,6 +81,8 @@ def signup():
         return render_template('users/signup.html', form=form)
 
 
+# Handles logging the user in
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
     """Handle user login."""
@@ -98,6 +103,8 @@ def login():
     return render_template('users/login.html', form=form)
 
 
+# Handles logging the user out
+
 @app.route('/logout')
 def logout():
     """Handle logout of user."""
@@ -109,6 +116,7 @@ def logout():
 
 
 #############################
+
 # Home page and brewery search
 
 @app.route('/', methods=['GET', 'POST'])
@@ -123,6 +131,8 @@ def home():
         return render_template('home.html', form=form, breweries=breweries)
     return render_template('home.html', form=form)
 
+
+# Details page for a selected Brewery
 
 @app.route('/brewery/<brewery_name>', methods=['GET', 'POST'])
 def brewery_details(brewery_name):
@@ -183,3 +193,30 @@ def brewery_details(brewery_name):
 
     # Pass the brewery data to the template
     return render_template('detail.html', brewery=brewery_data, reviews=reviews)
+
+
+# Handles deleting a Review for a Brewery
+
+@app.route('/breweries/<brewery_name>/delete_review/<int:review_id>', methods=['POST'])
+def delete_review(brewery_name, review_id):
+    review = Review.query.get_or_404(review_id)
+    if g.user and review.user_id == g.user.id:
+        db.session.delete(review)
+        db.session.commit()
+        flash('Your review has been deleted.', 'success')
+    else:
+        flash('You are not authorized to delete this review.', 'danger')
+    return redirect(url_for('brewery_details', brewery_name=brewery_name))
+
+
+#############################
+
+# Handles the user viewing their account
+
+@app.route('/account/<int:user_id>')
+def account(user_id):
+    """Show the user account information."""
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('users/account.html', user=user)

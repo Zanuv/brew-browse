@@ -10,11 +10,7 @@
 		<link rel="stylesheet" href="/static/style.css" />
 
 		<!-- Favicon Icon -->
-		<link
-			rel="shortcut icon"
-			href="/static/favicon.png"
-			type="image/x-icon"
-		/>
+		<link rel="shortcut icon" href="/static/beer.png" type="image/x-icon" />
 
 		<!-- Bootstrap CSS -->
 		<link
@@ -65,6 +61,13 @@
 						>
 					</li>
 					{% if g.user %}
+					<li class="nav-item">
+						<a
+							class="nav-link"
+							href="{{ url_for('account', user_id=g.user.id) }}"
+							>Account</a
+						>
+					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{{ url_for('logout') }}"
 							>Logout</a
