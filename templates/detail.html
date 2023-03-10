@@ -1,26 +1,65 @@
 {% extends "base.html" %} {% block content %}
-<div class="container">
-	<h1>Brewery Search</h1>
-	<hr />
-	<div class="row justify-content-center">
-		<div class="col-md-6">
-			<div class="card mb-3">
-				<div class="card-body">
-					<h5 class="card-title">{{ brewery.name }}</h5>
-					<p class="card-text">
-						{{ brewery.brewery_type.capitalize() }}
-					</p>
-					<p class="card-text">
-						{{ brewery.street }}, {{ brewery.city }}, {{
-						brewery.state }}, {{ brewery.postal_code }}
-					</p>
-					<p class="card-text">{{ brewery.phone }}</p>
-					<a href="{{ brewery.website_url }}" class="btn btn-primary"
-						>Website</a
-					>
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-md-8">
+			<h1>{{ brewery.name }}</h1>
+			<p>{{ brewery.street }}</p>
+			<p>
+				{{ brewery.city }}, {{ brewery.state }} {{ brewery.postal_code
+				}}
+			</p>
+			<p>{{ brewery.phone }}</p>
+			<p>{{ brewery.website_url }}</p>
+		</div>
+		<div class="col-md-4">
+			<h4>Add a Review</h4>
+			{% if g.user %}
+			<form
+				method="POST"
+				action="{{ url_for('brewery_details', brewery_name=brewery.name) }}"
+			>
+				<div class="form-group">
+					<label for="review">Review:</label>
+					<textarea
+						class="form-control"
+						id="review"
+						name="review"
+						rows="3"
+					></textarea>
 				</div>
-			</div>
+				<div class="form-group">
+					<label for="rating">Rating:</label>
+					<select class="form-control" id="rating" name="rating">
+						<option value="1">1 star</option>
+						<option value="2">2 stars</option>
+						<option value="3">3 stars</option>
+						<option value="4">4 stars</option>
+						<option value="5">5 stars</option>
+					</select>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+			{% else %}
+			<p><a href="{{ url_for('login') }}">Log in</a> to add a review.</p>
+			{% endif %}
 		</div>
 	</div>
+	<hr />
+	<h2>Reviews</h2>
+	{% for review in reviews %}
+	<div class="row mb-3">
+		<div class="col-md-12">
+			<p>{{ review.review }}</p>
+			<p>
+				{% for i in range(review.star_rating) %}
+				<i class="fas fa-star"></i>
+				{% endfor %} {% for i in range(5 - review.star_rating) %}
+				<i class="far fa-star"></i>
+				{% endfor %}
+			</p>
+			<small>Reviewed by {{ review.user.username }}</small>
+		</div>
+	</div>
+	{% endfor %}
 </div>
 {% endblock %}

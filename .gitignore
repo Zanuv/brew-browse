@@ -7060,3 +7060,4 @@ venv/lib/python3.11/site-packages/ipython-8.11.0.dist-info/WHEEL
 venv/share/man/man1/ipython.1
 .gitignore
 __pycache__/models.cpython-310.pyc
+__pycache__/app.cpython-310.pyc

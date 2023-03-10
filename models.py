@@ -25,7 +25,7 @@ class User(db.Model):
                       nullable=False,
                       unique=True)
 
-    reviews = db.relationship('Review')
+    reviews = db.relationship('Review', backref='user')
 
     @classmethod
     def signup(cls, username, email, password):
@@ -71,19 +71,21 @@ class Review(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True)
 
-    review = db.Column(db.Text,
+    review = db.Column(db.String(200),
                        nullable=False)
 
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id', ondelete='cascade')
                         )
 
-    brew_id = db.Column(db.Integer,
-                        db.ForeignKey('breweries.id', ondelete='cascade')
-                        )
+    brewery_id = db.Column(db.Integer,
+                           db.ForeignKey('breweries.id', ondelete='cascade')
+                           )
 
     star_rating = db.Column(db.Integer,
                             nullable=False)
+
+    brewery = db.relationship('Brewery', backref='reviews')
 
 
 class Brewery(db.Model):
@@ -96,8 +98,6 @@ class Brewery(db.Model):
 
     name = db.Column(db.Text,
                      nullable=False)
-
-    reviews = db.relationship('Review')
 
 
 def connect_db(app):

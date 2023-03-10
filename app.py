@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, session, g, flash, abort
+from flask import Flask, redirect, render_template, request, session, g, flash, abort, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Review, Brewery
 from forms import SignupForm, LoginForm, BrewerySearchForm
@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///brew'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "CatsAreGoingCrazy"
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 toolbar = DebugToolbarExtension(app)
 
@@ -123,15 +124,62 @@ def home():
     return render_template('home.html', form=form)
 
 
-@app.route('/brewery/<brewery_name>')
+@app.route('/brewery/<brewery_name>', methods=['GET', 'POST'])
 def brewery_details(brewery_name):
+    # Check if the brewery exists in the database
+    brewery = Brewery.query.filter_by(name=brewery_name).first()
+
+    # If it doesn't exist, query the API to get the brewery data
+    if not brewery:
+        url = f'https://api.openbrewerydb.org/breweries?by_name={brewery_name}'
+        response = requests.get(url)
+        breweries = response.json()
+        if breweries:
+            brewery_data = next(
+                (brewery for brewery in breweries if brewery['name'] == brewery_name), None)
+        else:
+            return abort(404)
+
+        # Create a new Brewery object with the name attribute
+        brewery = Brewery(name=brewery_data['name'])
+
+        # Add the new Brewery object to the database
+        db.session.add(brewery)
+        db.session.commit()
+
+        # Redirect the user to the same page to prevent form resubmission
+        return redirect(url_for('brewery_details', brewery_name=brewery_name))
+
+    # Handle the review form submission
+    if request.method == 'POST':
+        review_text = request.form.get('review')
+        rating = request.form.get('rating')
+        user_id = g.user.id
+        # Create a new Review object and associate it with the brewery
+        review = Review(
+            review=review_text,
+            star_rating=rating,
+            brewery_id=brewery.id,
+            user_id=user_id
+        )
+        db.session.add(review)
+        db.session.commit()
+
+        # Redirect the user to the same page to prevent form resubmission
+        return redirect(url_for('brewery_details', brewery_name=brewery_name))
+
+    # Query the API to get the brewery data
     url = f'https://api.openbrewerydb.org/breweries?by_name={brewery_name}'
     response = requests.get(url)
     breweries = response.json()
     if breweries:
-        brewery = next(
+        brewery_data = next(
             (brewery for brewery in breweries if brewery['name'] == brewery_name), None)
-    if brewery:
-        return render_template('detail.html', brewery=brewery)
     else:
         return abort(404)
+
+    # Query the reviews associated with the brewery
+    reviews = Review.query.filter_by(brewery_id=brewery.id).all()
+
+    # Pass the brewery data to the template
+    return render_template('detail.html', brewery=brewery_data, reviews=reviews)
