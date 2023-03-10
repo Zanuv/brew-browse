@@ -1,13 +1,13 @@
 {% extends "base.html" %} {% block content %}
 <div class="container">
 	<h1>Brewery Search</h1>
-	<hr />
-	<form method="POST">
-		{{ form.csrf_token }} {{ form.city.label }} {{ form.city }} {{
-		form.state.label }} {{ form.state }}
-		<button type="submit" class="btn btn-primary">Search</button>
-	</form>
-	<hr />
+	<div class="search-bar">
+		<form method="POST">
+			{{ form.csrf_token }} {{ form.city.label }} {{ form.city }} {{
+			form.state.label }} {{ form.state }}
+			<button type="submit"><i class="fas fa-search"></i></button>
+		</form>
+	</div>
 	{% if breweries %}
 	<div class="row justify-content-center">
 		{% for brewery in breweries %}
@@ -35,6 +35,45 @@
 		</div>
 		{% endfor %}
 	</div>
+	{% endif %} {% if recent_reviews %}
+	<h2>Recent Reviews</h2>
+	<div class="row">
+		{% for review in recent_reviews %}
+		<div class="col-md-4">
+			<div class="card mb-3">
+				<div class="card-body">
+					<h5 class="card-title">{{ review.user.username }}</h5>
+					<p class="card-text">Wrote a review</p>
+					<a
+						href="{{ url_for('brewery_details', brewery_name=review.brewery.name) }}"
+					>
+						<h5 class="card-title">{{ review.brewery.name }}</h5>
+					</a>
+					<p>
+						{% for i in range(review.star_rating if
+						review.star_rating is not none else 0) %}
+						<img
+							src="{{ url_for('static', filename='beer.png') }}"
+							alt="beer icon"
+							width="20"
+						/>
+						{% endfor %} {% for i in range(5 - (review.star_rating
+						if review.star_rating is not none else 0)) %}
+						<img
+							src="{{ url_for('static', filename='beer.png') }}"
+							alt="beer icon"
+							width="20"
+							style="opacity: 0.2"
+						/>
+						{% endfor %}
+					</p>
+					<p class="card-text">{{ review.review }}</p>
+				</div>
+			</div>
+		</div>
+		{% if loop.index % 3 == 0 %}
+	</div>
+	<div class="row">{% endif %} {% endfor %}</div>
 	{% endif %}
 </div>
 {% endblock %}

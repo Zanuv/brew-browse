@@ -129,7 +129,11 @@ def home():
         response = requests.get(url)
         breweries = response.json()
         return render_template('home.html', form=form, breweries=breweries)
-    return render_template('home.html', form=form)
+
+    # Get the most recent reviews from the database
+    recent_reviews = Review.query.order_by(Review.id.desc()).limit(30).all()
+
+    return render_template('home.html', form=form, recent_reviews=recent_reviews)
 
 
 # Details page for a selected Brewery
