@@ -1,6 +1,5 @@
 {% extends "base.html" %} {% block content %}
 <div class="container">
-	<h1>Brewery Search</h1>
 	<div class="search-bar">
 		<form method="POST">
 			{{ form.csrf_token }} {{ form.city.label }} {{ form.city }} {{
@@ -36,7 +35,10 @@
 		{% endfor %}
 	</div>
 	{% endif %} {% if recent_reviews %}
-	<h2>Recent Reviews</h2>
+	<div class="recent-review">
+		<h2>Recent Reviews</h2>
+	</div>
+
 	<div class="row">
 		{% for review in recent_reviews %}
 		<div class="col-md-4">
