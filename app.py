@@ -171,6 +171,12 @@ def brewery_details(brewery_name):
         review_text = request.form.get('review')
         rating = request.form.get('rating')
         user_id = g.user.id
+
+        # Check if the review is too long
+        if len(review_text) > 200:
+            flash('Review is too long (maximum 200 characters)')
+            return redirect(url_for('brewery_details', brewery_name=brewery_name))
+
         # Create a new Review object and associate it with the brewery
         review = Review(
             review=review_text,

@@ -2,11 +2,12 @@
 <div class="container">
 	<div class="search-bar">
 		<form method="POST">
-			{{ form.csrf_token }} {{ form.city.label }} {{ form.city }} {{
-			form.state.label }} {{ form.state }}
+			{{ form.csrf_token }} {{ form.city(size=20, placeholder='City') }}
+			{{ form.state(size=20, placeholder='State') }}
 			<button type="submit"><i class="fas fa-search"></i></button>
 		</form>
 	</div>
+
 	{% if breweries %}
 	<div class="h2-center">
 		<h2>Local Breweries</h2>
