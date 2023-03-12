@@ -7,7 +7,11 @@
 	<div class="account-info-box">
 		<p><strong>Email:</strong> {{ user.email }}</p>
 	</div>
-	<!-- Add more boxes for other information as needed -->
+	<div class="account-info-box">
+		<a href="{{ url_for('change_password') }}" class="btn btn-primary"
+			>Change Password</a
+		>
+	</div>
 </div>
 
 {% endblock %}

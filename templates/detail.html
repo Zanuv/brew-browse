@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content %}
-<div class="container mt-5">
-	<div class="row">
+<div class="container">
+	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<h1>{{ brewery.name }}</h1>
 			<p>{{ brewery.street }}</p>
@@ -15,9 +15,7 @@
 					>{{ brewery.website_url }}</a
 				>
 			</p>
-		</div>
-		<div class="col-md-4">
-			<h4>Add a Review</h4>
+			<h4 class="add-review">Add a Review</h4>
 			{% if g.user %}
 			<form
 				method="POST"
@@ -50,44 +48,49 @@
 		</div>
 	</div>
 	<hr />
-	<h2>Reviews</h2>
-	{% for review in reviews %}
+	<h2 class="review-detail">Reviews</h2>
+	{% for i in range(0, reviews|length, 3) %}
 	<div class="row mb-3">
-		<div class="col-md-12">
-			<p>
-				{% for i in range(review.star_rating if review.star_rating is
-				not none else 0) %}
-				<img
-					src="{{ url_for('static', filename='beer.png') }}"
-					alt="beer icon"
-					width="20"
-				/>
-				{% endfor %} {% for i in range(5 - (review.star_rating if
-				review.star_rating is not none else 0)) %}
-				<img
-					src="{{ url_for('static', filename='beer.png') }}"
-					alt="beer icon"
-					width="20"
-					style="opacity: 0.2"
-				/>
-				{% endfor %}
-			</p>
-
-			<p>{{ review.review }}</p>
-
-			<small>Reviewed by {{ review.user.username }}</small>
-
-			{% if g.user and review.user == g.user %}
-			<form
-				method="POST"
-				action="{{ url_for('delete_review', brewery_name=brewery.name, review_id=review.id) }}"
-			>
-				<button type="submit" class="btn btn-danger btn-sm">
-					Delete
-				</button>
-			</form>
-			{% endif %}
+		{% for review in reviews[i:i+3] %}
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<p class="card-text">
+						{% for i in range(review.star_rating if
+						review.star_rating is not none else 0) %}
+						<img
+							src="{{ url_for('static', filename='beer.png') }}"
+							alt="beer icon"
+							width="20"
+						/>
+						{% endfor %} {% for i in range(5 - (review.star_rating
+						if review.star_rating is not none else 0)) %}
+						<img
+							src="{{ url_for('static', filename='beer.png') }}"
+							alt="beer icon"
+							width="20"
+							style="opacity: 0.2"
+						/>
+						{% endfor %}
+					</p>
+					<p class="card-text">{{ review.review }}</p>
+					<small class="text-muted"
+						>Reviewed by {{ review.user.username }}</small
+					>
+					{% if g.user and review.user == g.user %}
+					<form
+						method="POST"
+						action="{{ url_for('delete_review', brewery_name=brewery.name, review_id=review.id) }}"
+					>
+						<button type="submit" class="btn btn-danger btn-sm">
+							Delete
+						</button>
+					</form>
+					{% endif %}
+				</div>
+			</div>
 		</div>
+		{% endfor %}
 	</div>
 	{% endfor %}
 </div>

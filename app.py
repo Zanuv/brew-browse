@@ -1,10 +1,12 @@
 from flask import Flask, redirect, render_template, request, session, g, flash, abort, url_for
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_bcrypt import Bcrypt
 from models import db, connect_db, User, Review, Brewery
-from forms import SignupForm, LoginForm, BrewerySearchForm
+from forms import SignupForm, LoginForm, BrewerySearchForm, ChangePasswordForm
 from sqlalchemy.exc import IntegrityError
 import requests
 
+bcrypt = Bcrypt()
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
@@ -222,5 +224,32 @@ def account(user_id):
     """Show the user account information."""
 
     user = User.query.get_or_404(user_id)
+    change_password_form = ChangePasswordForm()
 
-    return render_template('users/account.html', user=user)
+    return render_template('users/account.html', user=user, change_password_form=change_password_form)
+
+
+@app.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    form = ChangePasswordForm()
+
+    if form.validate_on_submit():
+        old_password = form.old_password.data
+        new_password = form.new_password.data
+        hashed_password = g.user.password
+
+        # Check if the old password is correct
+        if bcrypt.check_password_hash(hashed_password, old_password):
+            # Hash the new password and update the user's password
+            new_password_hash = bcrypt.generate_password_hash(
+                new_password).decode('utf-8')
+            g.user.password = new_password_hash
+            db.session.commit()
+
+            flash('Your password has been updated.', 'success')
+            return redirect(url_for('account', user_id=g.user.id))
+
+        else:
+            flash('Old password is incorrect.', 'danger')
+
+    return render_template('users/change_password.html', form=form)

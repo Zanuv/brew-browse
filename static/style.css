@@ -31,14 +31,11 @@ main {
   margin: 0 auto;
 }
 
-form {
-  margin: 0 auto;
-  width: 50%;
-}
 
 h1 {
   margin: 0 auto;
   width: 50%;
+  text-align: center;
 }
 
 .navbar {
@@ -121,3 +118,28 @@ h1 {
 .h2-center {
   text-align: center;
 }
+
+.add-review {
+  text-align: center;
+}
+
+.review-detail {
+  text-align: center;
+}
+ 
+.account-info-box {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+

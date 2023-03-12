@@ -38,3 +38,14 @@ class ReviewForm(FlaskForm):
     star_rating = IntegerField('Rating', validators=[
                                DataRequired(), NumberRange(min=1, max=5)])
     submit = SubmitField('Submit Review')
+
+
+class ChangePasswordForm(FlaskForm):
+    """Form for changing password."""
+
+    old_password = PasswordField('Old Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[
+                                 DataRequired(), Length(min=6)])
+    confirm_password = PasswordField('Confirm Password', validators=[
+                                     DataRequired(), EqualTo('new_password', message='Passwords must match')])
+    submit = SubmitField('Change Password')
