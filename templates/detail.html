@@ -3,6 +3,7 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<h1>{{ brewery.name }}</h1>
+			<p>Brewery Type: {{ brewery.brewery_type.capitalize() }}</p>
 			<p>{{ brewery.street }}</p>
 			<p>
 				{{ brewery.city }}, {{ brewery.state }} {{ brewery.postal_code
