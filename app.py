@@ -232,7 +232,10 @@ def account(user_id):
     user = User.query.get_or_404(user_id)
     change_password_form = ChangePasswordForm()
 
-    return render_template('users/account.html', user=user, change_password_form=change_password_form)
+    # Query the reviews associated with the user
+    reviews = Review.query.filter_by(user_id=user_id).all()
+
+    return render_template('users/account.html', user=user, change_password_form=change_password_form, reviews=reviews)
 
 
 @app.route('/change_password', methods=['GET', 'POST'])

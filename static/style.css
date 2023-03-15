@@ -30,7 +30,7 @@
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: antiquewhite;
+	background-color: #f5ac59;
 	z-index: 1; /* make sure the navbar is on top of other elements */
 }
 
@@ -137,28 +137,39 @@ h1 {
 
 /* Styling Account details */
 
-.account-info-box {
-	border: 1px solid black;
-	padding: 10px;
-	margin: 10px;
-	width: 300px;
-	display: flex;
-	flex-direction: column;
-	border-radius: 10px;
-	margin-bottom: 10px;
-}
-
 .account-info {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
+	margin-top: 20px;
+}
+
+.account-info-box {
+	margin-bottom: 20px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	width: 100%;
+}
+
+.account-info-box p {
+	margin: 0;
+}
+
+.btn-primary {
+	background-color: #007bff;
+	border-color: #007bff;
+}
+
+.btn-primary:hover {
+	background-color: #0069d9;
+	border-color: #0062cc;
 }
 
 /* Footer Styling */
 
 .footer {
-	background-color: antiquewhite; /* Change this to the color you want */
+	background-color: #f5ac59; /* Change this to the color you want */
 	padding: 40px; /* Change this to adjust the amount of space */
 	text-align: center;
 }
@@ -174,4 +185,10 @@ h1 {
 
 .github-link i {
 	color: #6c757d;
+}
+
+/* Login Styling */
+
+.card {
+	margin-bottom: 20px;
 }

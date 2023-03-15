@@ -1,9 +1,26 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Log In</h1>
-<form method="post" action="{{ url_for('login') }}">
-	{{ form.hidden_tag() }}
-	<div>{{ form.email.label }} {{ form.email() }}</div>
-	<div>{{ form.password.label }} {{ form.password() }}</div>
-	<div>{{ form.submit() }}</div>
-</form>
+<div class="row justify-content-center">
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<h1 class="card-title text-center">Log In</h1>
+				<form method="post" action="{{ url_for('login') }}">
+					{{ form.hidden_tag() }}
+					<div class="form-group">
+						{{ form.email(class="form-control",
+						placeholder='Email')}}
+					</div>
+					<div class="form-group">
+						{{ form.password(class="form-control",
+						placeholder='Password') }}
+					</div>
+					<div class="form-group">
+						{{ form.submit(class="btn btn-primary btn-block
+						login-btn") }}
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
