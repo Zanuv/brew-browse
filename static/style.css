@@ -166,6 +166,15 @@ h1 {
 	border-color: #0062cc;
 }
 
+.edit-btn {
+	margin-bottom: 20px;
+}
+
+.edit-btn,
+.delete-btn {
+	width: 70px;
+}
+
 /* Footer Styling */
 
 .footer {

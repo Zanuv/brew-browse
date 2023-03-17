@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, HiddenField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, NumberRange
 
 
@@ -28,16 +28,6 @@ class BrewerySearchForm(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
     state = StringField('State', validators=[DataRequired()])
     submit = SubmitField('Search')
-
-
-class ReviewForm(FlaskForm):
-    """Form for a User to submit a Review."""
-
-    review = StringField('Review', validators=[
-                         DataRequired(), Length(max=200)])
-    star_rating = IntegerField('Rating', validators=[
-                               DataRequired(), NumberRange(min=1, max=5)])
-    submit = SubmitField('Submit Review')
 
 
 class ChangePasswordForm(FlaskForm):

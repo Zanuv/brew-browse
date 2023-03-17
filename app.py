@@ -221,6 +221,33 @@ def delete_review(brewery_name, review_id):
     return redirect(url_for('brewery_details', brewery_name=brewery_name))
 
 
+# Handles allowing a user to edit the reviews they have made
+
+@app.route('/review/<int:review_id>/edit', methods=['GET', 'POST'])
+def edit_review(review_id):
+    # Get the review from the database
+    review = Review.query.get(review_id)
+
+    # Make sure the review exists and the user is authorized to edit it
+    if not review or (g.user and review.user_id != g.user.id):
+        return abort(404)
+
+    # Handle the form submission
+    if request.method == 'POST':
+        review_text = request.form['review']
+        star_rating = request.form['star_rating']
+        review.review = review_text
+        review.star_rating = star_rating
+        db.session.commit()
+        flash('Your review has been updated!', 'success')
+
+        # Redirect the user to the brewery detail page
+        return redirect(url_for('brewery_details', brewery_name=review.brewery.name))
+
+    # Render the template with the review form
+    return render_template('edit_review.html', review=review)
+
+
 #############################
 
 # Handles the user viewing their account
