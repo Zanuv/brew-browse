@@ -11,10 +11,12 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///brew'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://brew_9js6_user:qRgTzaY3dOfcy28TBShto0xcqFR1cPKV@dpg-cgh4sp02qv23kcol02cg-a.ohio-postgres.render.com/brew_9js6'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "CatsAreGoingCrazy"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
+# postgresql://brew_9js6_user:qRgTzaY3dOfcy28TBShto0xcqFR1cPKV@dpg-cgh4sp02qv23kcol02cg-a.ohio-postgres.render.com/brew_9js6
 
 toolbar = DebugToolbarExtension(app)
 
